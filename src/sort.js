@@ -158,7 +158,7 @@ function randomizePixels() { // TODO make optional?
       return pixels;
 }
 
-function mergeSortL(array, option) {
+function mergeSortL(array) {
     if (array.length <= 1) {
       return array; 
     }
@@ -170,7 +170,7 @@ function mergeSortL(array, option) {
     return mergeL(left, right);
 }
 
-function mergeSortH(array, option) {
+function mergeSortH(array) {
     if (array.length <= 1) {
       return array; 
     }
@@ -182,7 +182,7 @@ function mergeSortH(array, option) {
     return mergeH(left, right);
 }
 
-function mergeSortS(array, option) {
+function mergeSortS(array) {
     if (array.length <= 1) {
       return array; 
     }
@@ -192,6 +192,42 @@ function mergeSortS(array, option) {
     const right = mergeSortS(array.slice(mid));
 
     return mergeS(left, right);
+}
+
+function mergeSortR(array) {
+    if (array.length <= 1) {
+      return array; 
+    }
+
+    const mid = Math.floor(array.length / 2);
+    const left = mergeSortR(array.slice(0, mid));
+    const right = mergeSortR(array.slice(mid));
+
+    return mergeR(left, right);
+}
+
+function mergeSortG(array) {
+    if (array.length <= 1) {
+      return array; 
+    }
+
+    const mid = Math.floor(array.length / 2);
+    const left = mergeSortG(array.slice(0, mid));
+    const right = mergeSortG(array.slice(mid));
+
+    return mergeG(left, right);
+}
+
+function mergeSortB(array) {
+    if (array.length <= 1) {
+      return array; 
+    }
+
+    const mid = Math.floor(array.length / 2);
+    const left = mergeSortB(array.slice(0, mid));
+    const right = mergeSortB(array.slice(mid));
+
+    return mergeB(left, right);
 }
 
 function mergeL(left, right) {
@@ -248,6 +284,60 @@ function mergeS(left, right) {
     return result.concat(left.slice(i)).concat(right.slice(j));
 } 
 
+function mergeR(left, right) {
+    const result = [];
+    let i = 0;
+    let j = 0;
+    
+    while (i < left.length && j < right.length) {
+        if (left[i].r < right[j].r) {
+        result.push(left[i]);
+        i++;
+        } else {
+        result.push(right[j]);
+        j++;
+        }
+    }
+    
+    return result.concat(left.slice(i)).concat(right.slice(j));
+}
+
+function mergeG(left, right) {
+    const result = [];
+    let i = 0;
+    let j = 0;
+    
+    while (i < left.length && j < right.length) {
+        if (left[i].g < right[j].g) {
+        result.push(left[i]);
+        i++;
+        } else {
+        result.push(right[j]);
+        j++;
+        }
+    }
+    
+    return result.concat(left.slice(i)).concat(right.slice(j));
+}
+
+function mergeB(left, right) {
+    const result = [];
+    let i = 0;
+    let j = 0;
+    
+    while (i < left.length && j < right.length) {
+        if (left[i].b < right[j].b) {
+        result.push(left[i]);
+        i++;
+        } else {
+        result.push(right[j]);
+        j++;
+        }
+    }
+    
+    return result.concat(left.slice(i)).concat(right.slice(j));
+}
+
   function horizontalSort(option) {
     const rows = [];
 
@@ -265,6 +355,12 @@ function mergeS(left, right) {
             newRow = mergeSortH(row);
         } else if (option === 's') {
             newRow = mergeSortS(row);
+        } else if (option === 'r') {
+            newRow = mergeSortR(row);
+        } else if (option === 'g') {
+            newRow = mergeSortG(row);
+        } else if (option === 'b') {
+            newRow = mergeSortB(row);
         } else {
             newRow = mergeSortL(row);
         }   
@@ -298,6 +394,12 @@ function verticalSort(option) {
             newColumn = mergeSortH(column);
         } else if (option === 's') {
             newColumn = mergeSortS(column);
+        } else if (option === 'r') {
+            newColumn = mergeSortR(column);
+        } else if (option === 'g') {
+            newColumn = mergeSortG(column);
+        } else if (option === 'b') {
+            newColumn = mergeSortB(column);
         } else {
             newColumn = mergeSortL(column);
         }
