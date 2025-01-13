@@ -10,7 +10,7 @@ function App() {
   const [type, setType] = useState('normal')
   const [opt1, setOpt1] = useState('h')
   const [opt2, setOpt2] = useState('l')
-  const [opt3, setOpt3] = useState('r')
+  const [opt3, setOpt3] = useState('g')
 
 
   const getImage = async () => {
@@ -33,10 +33,10 @@ function App() {
         <div className="select-wrapper">
           <label for="spritesheet">Spritesheet</label>
           <select name="spritesheet" value={spriteSheet} onChange={e => setSpriteSheet(e.target.value)}>
-            <option value="crystal">Crystal</option>
-            <option value="crystal-shiny">Crystal (Shiny)</option>
-            <option value="black-white">Black and White</option>
-            <option value="black-white-shiny">Black and White (Shiny)</option>
+            <option value="crystal">Gen 2 (Crystal)</option>
+            <option value="crystal-shiny">Gen 2 Shiny (Crystal)</option>
+            <option value="black-white">Gen 5 (Black and White)</option>
+            <option value="black-white-shiny">Gen 5 Shiny (Black and White)</option>
           </select>
           <label for="type">Type</label>
           <select name="type" value={type} onChange={e => setType(e.target.value)}>
