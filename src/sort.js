@@ -105,7 +105,7 @@ function getSourceImg(spriteSheet) {
 
 async function getCanvas(sourceImg) {
     canvas = document.createElement('canvas');
-    ctx = canvas.getContext('2d');
+    ctx = canvas.getContext('2d', { willReadFrequently: true });
     let img = await loadImage(sourceImg);
     canvas.width = img.width
     canvas.height = img.height
@@ -157,24 +157,45 @@ function randomizePixels() { // TODO make optional?
       return pixels;
 }
 
-  function mergeSort(array, option) {
-    if (array.length == 1) {
-        return array;
-    } else {
-        let left = [];
-        let right = [];
-        left = array.slice(0, Math.floor(array.length / 2));
-        right = array.slice(Math.floor(array.length / 2));
-        newLeftArray = mergeSort(left, option);
-        newRightArray = mergeSort(right, option);
-        return merge(newLeftArray, newRightArray, option);
+function mergeSort(array, option) {
+    if (array.length <= 1) {
+      return array; 
     }
+
+    const mid = Math.floor(array.length / 2);
+    const left = mergeSort(array.slice(0, mid));
+    const right = mergeSort(array.slice(mid));
+
+    return merge(left, right, option);
 }
+
+function merge(left, right, option) {
+    const result = [];
+    let i = 0;
+    let j = 0;
   
-  function merge(left, right, option) {
-    sorted = [];
-    // come back and finish this later
-}
+    while (i < left.length && j < right.length) {
+        if (option === 'r') {
+            if (left[i].r < right[j].r) {
+                result.push(left[i]);
+                i++;
+              } else {
+                result.push(right[j]);
+                j++;
+              }
+        } else {
+            if (left[i].r < right[j].r) {
+                result.push(left[i]);
+                i++;
+              } else {
+                result.push(right[j]);
+                j++;
+              }
+        }
+    }
+  
+    return result.concat(left.slice(i)).concat(right.slice(j));
+  }
 
 // def merge(leftlst, rightlst, option):
 //     newLst = []
@@ -200,26 +221,6 @@ function randomizePixels() { // TODO make optional?
 //             r, g, b = rightlst[0][0], rightlst[0][1], rightlst[0][2]
 //             h, l, s = colorsys.rgb_to_hls(r, g, b)
 //             right = s
-//         if option == 3: # sort based R
-//             left = leftlst[0][0]
-//             right = rightlst[0][0]
-//         if option == 4: # sort based G
-//             left = leftlst[0][1]
-//             right = rightlst[0][1]
-//         if option == 5: # sort based B
-//             left = leftlst[0][2]
-//             right = rightlst[0][2]
-//         if left <= right:
-//             newLst.append(leftlst[0])
-//             leftlst.pop(0)
-//         else:
-//             newLst.append(rightlst[0])
-//             rightlst.pop(0)
-//     if len(leftlst) == 0:
-//         newLst = newLst + rightlst
-//     if len(rightlst) == 0:
-//         newLst = newLst + leftlst
-//     return newLst
 
 function horizontalSort(option) {
     const rows = [];
@@ -229,16 +230,20 @@ function horizontalSort(option) {
         rows.push(row); 
     }
 
+    console.log('initial rows:', rows);
+
     const newRows = []
     rows.forEach(row => {
         const newRow = mergeSort(row, option);
         newRows.push(newRow)
     }) 
 
+    console.log(newRows);
+
     // replace pixel array with these rows
     pixels = []
     newRows.forEach(row => {
-        pixels.concat(row);
+        pixels = pixels.concat(row);
     })
 }
 
@@ -261,7 +266,6 @@ function verticalSort(option) {
 
     // replace pixel array with these columns
     for (let y = 0; y < canvas.width; y++) {
-        // const column = []
         for (let i = 0; i < canvas.width; i++) {
             pixels[canvas.width * y + i] = newColumns[y][i];
         }
@@ -295,11 +299,11 @@ export async function generate(spriteSheet, type) {
     // Remove transparent pixels
     removeTransparent();
     // Randomize pixels. Very important!
-    // randomizePixels();
+    randomizePixels();
 
-    // horizontalSort();
-    // verticalSort();
-    // horizontalSort();
+    horizontalSort('r');
+    // verticalSort('r');
+    // horizontalSort('r');
     redraw();
     return canvas.toDataURL();
 } 
