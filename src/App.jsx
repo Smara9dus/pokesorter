@@ -33,7 +33,9 @@ function App() {
         <div className="select-wrapper">
           <label for="spritesheet">Spritesheet</label>
           <select name="spritesheet" value={spriteSheet} onChange={e => setSpriteSheet(e.target.value)}>
+            <option value="gold">Gen 2 (Gold)</option>
             <option value="crystal">Gen 2 (Crystal)</option>
+            <option value="gold-shiny">Gen 2 Shiny (Gold)</option>  
             <option value="crystal-shiny">Gen 2 Shiny (Crystal)</option>
             <option value="black-white">Gen 5 (Black and White)</option>
             <option value="black-white-shiny">Gen 5 Shiny (Black and White)</option>

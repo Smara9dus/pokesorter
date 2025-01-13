@@ -3,6 +3,8 @@ import blackWhite from "./assets/black-white.png"
 import blackWhiteShiny from "./assets/black-white-shiny.png"
 import crystal from "./assets/crystal.png"
 import crystalShiny from "./assets/crystal-shiny.png"
+import gold from "./assets/gold.png"
+import goldShiny from "./assets/gold-shiny.png"
 import { getTypeArray } from "./typedata";
 import { getH, getL, getS } from "./color-ops";
 
@@ -103,6 +105,14 @@ function getSourceImg(spriteSheet) {
         gridWidth = 20;
         maxNum = 251;
         return crystal;
+    } else if (spriteSheet === 'gold-shiny') {
+        gridWidth = 20;
+        maxNum = 251;
+        return goldShiny;
+    } else if (spriteSheet === 'gold') {
+        gridWidth = 20;
+        maxNum = 251;
+        return gold;
     } else if (spriteSheet === 'black-white-shiny') {
         gridWidth = 31;
         maxNum = 649;
