@@ -1,6 +1,8 @@
 
 import blackWhite from "./assets/black-white.png"
 import blackWhiteShiny from "./assets/black-white-shiny.png"
+import crystal from "./assets/crystal.png"
+import crystalShiny from "./assets/crystal-shiny.png"
 import { getTypeArray } from "./typedata";
 import { getH, getL, getS } from "./color-ops";
 
@@ -93,7 +95,15 @@ function getSourceImg(spriteSheet) {
 //         grid_width = 16
 //         max_num = 152
     //     im = im.convert("RGBA")
-    if (spriteSheet === 'black-white-shiny') {
+    if (spriteSheet === 'crystal-shiny') {
+        gridWidth = 20;
+        maxNum = 251;
+        return crystalShiny;
+    } else if (spriteSheet === 'crystal') {
+        gridWidth = 20;
+        maxNum = 251;
+        return crystal;
+    } else if (spriteSheet === 'black-white-shiny') {
         gridWidth = 31;
         maxNum = 649;
         return blackWhiteShiny;
@@ -114,6 +124,9 @@ async function getCanvas(sourceImg) {
 }
 
 function typeFilter(type) {
+    if (type === 'all') {
+        return;
+    }
     const spriteWidth = Math.floor(canvas.width / gridWidth);
     const selectedSprites = getTypeArray(type);
     const spritesToExclude = range(maxNum + 1).filter(x => !selectedSprites.includes(x))
@@ -413,10 +426,6 @@ function verticalSort(option) {
         }
     }    
 }
-
-//     """Every horizontal line in the picture is sorted from darkest to lightest.
-
-//     """Every vertical line in the picture is sorted by hue.
 
 function redraw() {
     const newImageData = ctx.getImageData(0, 0, canvas.width, canvas.height);

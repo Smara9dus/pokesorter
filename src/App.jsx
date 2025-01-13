@@ -24,17 +24,23 @@ function App() {
     <>
       <h1>Pokesorter</h1>
       <p className="subheader">
+        Throw pokemon into a virtual meatgrinder and see what comes out.
+      </p>
+      <p className="subheader">
         Select options and hit GO to generate an image!
       </p>
       <div className="card">
         <div className="select-wrapper">
           <label for="spritesheet">Spritesheet</label>
           <select name="spritesheet" value={spriteSheet} onChange={e => setSpriteSheet(e.target.value)}>
+            <option value="crystal">Crystal</option>
+            <option value="crystal-shiny">Crystal (Shiny)</option>
             <option value="black-white">Black and White</option>
             <option value="black-white-shiny">Black and White (Shiny)</option>
           </select>
           <label for="type">Type</label>
           <select name="type" value={type} onChange={e => setType(e.target.value)}>
+            <option value="all">All</option>
             <option value="normal">Normal</option>
             <option value="fighting">Fighting</option>
             <option value="flying">Flying</option>

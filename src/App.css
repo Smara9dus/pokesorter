@@ -24,7 +24,7 @@
 
 .card {
   padding: 2em;
-  display: inline-flex;
+  display: flex;
 }
 
 .select-wrapper {
