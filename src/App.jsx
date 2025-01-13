@@ -9,11 +9,15 @@ function App() {
   const [finalImage, setFinalImage] = useState(null)
   const [spriteSheet, setSpriteSheet] = useState('black-white')
   const [type, setType] = useState('normal')
+  const [opt1, setOpt1] = useState('l')
+  const [opt2, setOpt2] = useState('h')
+  const [opt3, setOpt3] = useState('l')
+
 
   const getImage = async () => {
     setLoading(true);
     setFinalImage(null);
-    setFinalImage(await generate(spriteSheet, type));
+    setFinalImage(await generate(spriteSheet, type, opt1, opt2, opt3));
     setLoading(false);
   }
 
@@ -47,6 +51,21 @@ function App() {
         <option value="dragon">Dragon</option>
         <option value="dark">Dark</option>
         <option value="fairy">Fairy</option>
+      </select>
+      <select name="option1" value={opt1} onChange={e => setOpt1(e.target.value)}>
+        <option value="l">L</option>
+        <option value="h">H</option>
+        <option value="s">S</option>
+      </select>
+      <select name="option2" value={opt2} onChange={e => setOpt2(e.target.value)}>
+        <option value="l">L</option>
+        <option value="h">H</option>
+        <option value="s">S</option>
+      </select>
+      <select name="option3" value={opt3} onChange={e => setOpt3(e.target.value)}>
+        <option value="l">L</option>
+        <option value="h">H</option>
+        <option value="s">S</option>
       </select>
       <button onClick={() => getImage()}>
         GO!

@@ -2,6 +2,7 @@
 import blackWhite from "./assets/black-white.png"
 import blackWhiteShiny from "./assets/black-white-shiny.png"
 import { getTypeArray } from "./typedata";
+import { getH, getL, getS } from "./color-ops";
 
 var canvas = null;
 var ctx = null;
@@ -157,72 +158,97 @@ function randomizePixels() { // TODO make optional?
       return pixels;
 }
 
-function mergeSort(array, option) {
+function mergeSortL(array, option) {
     if (array.length <= 1) {
       return array; 
     }
 
     const mid = Math.floor(array.length / 2);
-    const left = mergeSort(array.slice(0, mid));
-    const right = mergeSort(array.slice(mid));
+    const left = mergeSortL(array.slice(0, mid));
+    const right = mergeSortL(array.slice(mid));
 
-    return merge(left, right, option);
+    return mergeL(left, right);
 }
 
-function merge(left, right, option) {
+function mergeSortH(array, option) {
+    if (array.length <= 1) {
+      return array; 
+    }
+
+    const mid = Math.floor(array.length / 2);
+    const left = mergeSortH(array.slice(0, mid));
+    const right = mergeSortH(array.slice(mid));
+
+    return mergeH(left, right);
+}
+
+function mergeSortS(array, option) {
+    if (array.length <= 1) {
+      return array; 
+    }
+
+    const mid = Math.floor(array.length / 2);
+    const left = mergeSortS(array.slice(0, mid));
+    const right = mergeSortS(array.slice(mid));
+
+    return mergeS(left, right);
+}
+
+function mergeL(left, right) {
     const result = [];
     let i = 0;
     let j = 0;
-  
+    
     while (i < left.length && j < right.length) {
-        if (option === 'r') {
-            if (left[i].r < right[j].r) {
-                result.push(left[i]);
-                i++;
-              } else {
-                result.push(right[j]);
-                j++;
-              }
+        if (getL(left[i].r, left[i].g, left[i].b) < getL(right[j].r, right[j].g, right[j].b)) {
+        result.push(left[i]);
+        i++;
         } else {
-            if (left[i].r < right[j].r) {
-                result.push(left[i]);
-                i++;
-              } else {
-                result.push(right[j]);
-                j++;
-              }
+        result.push(right[j]);
+        j++;
         }
     }
-  
+    
     return result.concat(left.slice(i)).concat(right.slice(j));
-  }
+}   
 
-// def merge(leftlst, rightlst, option):
-//     newLst = []
-//     while len(leftlst) > 0 and len(rightlst) > 0:
-//         if option == 0: # sort based on lightness
-//             r, g, b = leftlst[0][0], leftlst[0][1], leftlst[0][2]
-//             h, l, s = colorsys.rgb_to_hls(r, g, b)
-//             left = l
-//             r, g, b = rightlst[0][0], rightlst[0][1], rightlst[0][2]
-//             h, l, s = colorsys.rgb_to_hls(r, g, b)
-//             right = l
-//         if option == 1: # sort based on hue
-//             r, g, b = leftlst[0][0], leftlst[0][1], leftlst[0][2]
-//             h, l, s = colorsys.rgb_to_hls(r, g, b)
-//             left = h
-//             r, g, b = rightlst[0][0], rightlst[0][1], rightlst[0][2]
-//             h, l, s = colorsys.rgb_to_hls(r, g, b)
-//             right = h
-//         if option == 2: # sort based on saturation
-//             r, g, b = leftlst[0][0], leftlst[0][1], leftlst[0][2]
-//             h, l, s = colorsys.rgb_to_hls(r, g, b)
-//             left = s
-//             r, g, b = rightlst[0][0], rightlst[0][1], rightlst[0][2]
-//             h, l, s = colorsys.rgb_to_hls(r, g, b)
-//             right = s
+function mergeH(left, right) {
+    const result = [];
+    let i = 0;
+    let j = 0;
+    
+    while (i < left.length && j < right.length) {
+        if (getH(left[i].r, left[i].g, left[i].b) < getH(right[j].r, right[j].g, right[j].b)) {
+        result.push(left[i]);
+        i++;
+        } else {
+        result.push(right[j]);
+        j++;
+        }
+    }
+    
+    return result.concat(left.slice(i)).concat(right.slice(j));
+}   
 
-function horizontalSort(option) {
+function mergeS(left, right) {
+    const result = [];
+    let i = 0;
+    let j = 0;
+    
+    while (i < left.length && j < right.length) {
+        if (getS(left[i].r, left[i].g, left[i].b) < getS(right[j].r, right[j].g, right[j].b)) {
+        result.push(left[i]);
+        i++;
+        } else {
+        result.push(right[j]);
+        j++;
+        }
+    }
+    
+    return result.concat(left.slice(i)).concat(right.slice(j));
+} 
+
+  function horizontalSort(option) {
     const rows = [];
 
     for (let x = 0; x < pixels.length; x += canvas.width) {
@@ -230,15 +256,20 @@ function horizontalSort(option) {
         rows.push(row); 
     }
 
-    console.log('initial rows:', rows);
-
     const newRows = []
     rows.forEach(row => {
-        const newRow = mergeSort(row, option);
+        let newRow = [];
+        if (option === 'l') {
+            newRow = mergeSortL(row);
+        } else if (option === 'h') {
+            newRow = mergeSortH(row);
+        } else if (option === 's') {
+            newRow = mergeSortS(row);
+        } else {
+            newRow = mergeSortL(row);
+        }   
         newRows.push(newRow)
     }) 
-
-    console.log(newRows);
 
     // replace pixel array with these rows
     pixels = []
@@ -260,14 +291,23 @@ function verticalSort(option) {
 
     const newColumns = [];
     columns.forEach(column => {
-        const newColumn = mergeSort(column, option);
+        let newColumn = [];
+        if (option === 'l') {
+            newColumn = mergeSortL(column);
+        } else if (option === 'h') {
+            newColumn = mergeSortH(column);
+        } else if (option === 's') {
+            newColumn = mergeSortS(column);
+        } else {
+            newColumn = mergeSortL(column);
+        }
         newColumns.push(newColumn);
     })
 
     // replace pixel array with these columns
     for (let y = 0; y < canvas.width; y++) {
         for (let i = 0; i < canvas.width; i++) {
-            pixels[canvas.width * y + i] = newColumns[y][i];
+            pixels[canvas.width * y + i] = newColumns[i][y];
         }
     }    
 }
@@ -288,7 +328,7 @@ function redraw() {
     ctx.putImageData(newImageData, 0, 0);
 }
 
-export async function generate(spriteSheet, type) {
+export async function generate(spriteSheet, type, opt1, opt2, opt3) {
     initialize();
     // Load source image based on sprite sheet selection
     const sourceImg = getSourceImg(spriteSheet);
@@ -301,9 +341,10 @@ export async function generate(spriteSheet, type) {
     // Randomize pixels. Very important!
     randomizePixels();
 
-    horizontalSort('r');
-    // verticalSort('r');
-    // horizontalSort('r');
+    // a nice combo, sort horizontally by lightness, and vertically by hue
+    horizontalSort(opt1);
+    verticalSort(opt2);
+    horizontalSort(opt3);
     redraw();
     return canvas.toDataURL();
 } 
