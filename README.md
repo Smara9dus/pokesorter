@@ -1,8 +1,7 @@
-# React + Vite
+# Pokesorter
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Throw pokemon into a virtual meatgrinder and see what comes out.
 
-Currently, two official plugins are available:
+Inspired by this [tweet by solst-ice](https://x.com/IceSolst/status/1877746896233533613) to finish a project i half-assed in 2019
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+Spritesheets from [veekun](https://veekun.com/dex/downloads) 
