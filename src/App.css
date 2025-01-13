@@ -29,4 +29,5 @@
 
 .select-wrapper {
   display: grid;
+  margin: 1em;
 }

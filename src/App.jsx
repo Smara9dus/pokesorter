@@ -8,9 +8,9 @@ function App() {
   const [finalImage, setFinalImage] = useState(null)
   const [spriteSheet, setSpriteSheet] = useState('black-white')
   const [type, setType] = useState('normal')
-  const [opt1, setOpt1] = useState('l')
-  const [opt2, setOpt2] = useState('h')
-  const [opt3, setOpt3] = useState('l')
+  const [opt1, setOpt1] = useState('h')
+  const [opt2, setOpt2] = useState('l')
+  const [opt3, setOpt3] = useState('r')
 
 
   const getImage = async () => {
@@ -28,10 +28,12 @@ function App() {
       </p>
       <div className="card">
         <div className="select-wrapper">
+          <label for="spritesheet">Spritesheet</label>
           <select name="spritesheet" value={spriteSheet} onChange={e => setSpriteSheet(e.target.value)}>
             <option value="black-white">Black and White</option>
             <option value="black-white-shiny">Black and White (Shiny)</option>
           </select>
+          <label for="type">Type</label>
           <select name="type" value={type} onChange={e => setType(e.target.value)}>
             <option value="normal">Normal</option>
             <option value="fighting">Fighting</option>
@@ -52,6 +54,7 @@ function App() {
             <option value="dark">Dark</option>
             <option value="fairy">Fairy</option>
           </select>
+          <label for="option1">Sort options</label>
           <select name="option1" value={opt1} onChange={e => setOpt1(e.target.value)}>
             <option value="l">L</option>
             <option value="h">H</option>
