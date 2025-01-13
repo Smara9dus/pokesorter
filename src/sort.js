@@ -161,8 +161,8 @@ function randomizePixels() { // TODO make optional?
     if (array.length == 1) {
         return array;
     } else {
-        const left = [];
-        const right = [];
+        let left = [];
+        let right = [];
         left = array.slice(0, Math.floor(array.length / 2));
         right = array.slice(Math.floor(array.length / 2));
         newLeftArray = mergeSort(left, option);
@@ -221,7 +221,7 @@ function randomizePixels() { // TODO make optional?
 //         newLst = newLst + leftlst
 //     return newLst
 
-function horizontalSort() {
+function horizontalSort(option) {
     const rows = [];
 
     for (let x = 0; x < pixels.length; x += canvas.width) {
@@ -229,14 +229,20 @@ function horizontalSort() {
         rows.push(row); 
     }
 
+    const newRows = []
     rows.forEach(row => {
-        const sortedRow = mergeSort(row);
+        const newRow = mergeSort(row, option);
+        newRows.push(newRow)
     }) 
 
     // replace pixel array with these rows
+    pixels = []
+    newRows.forEach(row => {
+        pixels.concat(row);
+    })
 }
 
-function verticalSort() {
+function verticalSort(option) {
     const columns = [];
 
     for (let y = 0; y < canvas.width; y++) {
@@ -246,8 +252,20 @@ function verticalSort() {
         }
         columns.push(column);
     }
-    
+
+    const newColumns = [];
+    columns.forEach(column => {
+        const newColumn = mergeSort(column, option);
+        newColumns.push(newColumn);
+    })
+
     // replace pixel array with these columns
+    for (let y = 0; y < canvas.width; y++) {
+        // const column = []
+        for (let i = 0; i < canvas.width; i++) {
+            pixels[canvas.width * y + i] = newColumns[y][i];
+        }
+    }    
 }
 
 //     """Every horizontal line in the picture is sorted from darkest to lightest.

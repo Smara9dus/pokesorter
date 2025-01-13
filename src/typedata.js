@@ -89,7 +89,6 @@ export const fairy_secondary = [39, 40, 122, 174, 183, 184, 280, 281, 282, 298, 
 export const fairy_all = [...new Set([...fairy_pure, ...fairy_primary, ...fairy_secondary])];
 
 export function getTypeArray(type) {
-    console.log(type);
     if (type === 'fighting') {
         return fighting_all;
     } else if (type === 'flying') {
