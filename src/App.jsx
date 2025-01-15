@@ -33,12 +33,27 @@ function App() {
         <div className="select-wrapper">
           <label for="spritesheet">Spritesheet</label>
           <select name="spritesheet" value={spriteSheet} onChange={e => setSpriteSheet(e.target.value)}>
-            <option value="gold">Gen 2 (Gold)</option>
-            <option value="crystal">Gen 2 (Crystal)</option>
-            <option value="gold-shiny">Gen 2 Shiny (Gold)</option>  
-            <option value="crystal-shiny">Gen 2 Shiny (Crystal)</option>
-            <option value="black-white">Gen 5 (Black and White)</option>
-            <option value="black-white-shiny">Gen 5 Shiny (Black and White)</option>
+            <option value="rb">Gen 1 (Red/Blue SGB)</option>
+            <option value="ysgb">Gen 1 (Yellow SGB)</option>
+            <option value="ygbc">Gen 1 (Yellow GBC)</option>
+            <option value="g">Gen 2 (Gold)</option>
+            <option value="s">Gen 2 (Silver)</option>
+            <option value="c">Gen 2 (Crystal)</option>
+            <option value="gs">Gen 2 Shiny (Gold)</option>
+            <option value="ss">Gen 2 Shiny (Silver)</option>  
+            <option value="cs">Gen 2 Shiny (Crystal)</option>
+            <option value="gen3">Gen 3 (Ruby/Sapphire/Emerald)</option>
+            <option value="frlg">Gen 3 (Fire Red/Leaf Green)</option>
+            <option value="gen3s">Gen 3 Shiny (Ruby/Sapphire/Emerald)</option>
+            <option value="frlgs">Gen 3 Shiny (Fire Red/Leaf Green)</option>
+            <option value="dp">Gen 4 (Diamond/Pearl)</option>
+            <option value="p">Gen 4 (Platinum)</option>
+            <option value="hgss">Gen 4 (Heart Gold/Soul Silver)</option>
+            <option value="dps">Gen 4 Shiny (Diamond/Pearl)</option>
+            <option value="ps">Gen 4 Shiny (Platinum)</option>
+            <option value="hgsss">Gen 4 Shiny (Heart Gold/Soul Silver)</option>
+            <option value="bw">Gen 5 (Black and White)</option>
+            <option value="bws">Gen 5 Shiny (Black and White)</option>
           </select>
           <label for="type">Type</label>
           <select name="type" value={type} onChange={e => setType(e.target.value)}>

@@ -1,10 +1,26 @@
 
-import blackWhite from "./assets/black-white.png"
-import blackWhiteShiny from "./assets/black-white-shiny.png"
-import crystal from "./assets/crystal.png"
-import crystalShiny from "./assets/crystal-shiny.png"
-import gold from "./assets/gold.png"
-import goldShiny from "./assets/gold-shiny.png"
+import bw from "./assets/black-white.png"
+import bws from "./assets/black-white-shiny.png"
+import c from "./assets/crystal.png"
+import cs from "./assets/crystal-shiny.png"
+import g from "./assets/gold.png"
+import gs from "./assets/gold-shiny.png"
+import rb from "./assets/red-blue-sgb.png"
+import ysgb from "./assets/yellow-sgb.png"
+import ygbc from "./assets/yellow-gbc.png"
+import s from "./assets/silver.png";
+import ss from "./assets/silver-shiny.png"
+import gen3 from "./assets/generation-3.png";
+import gen3s from "./assets/generation-3-shiny.png";
+import frlg from "./assets/firered-leafgreen.png";
+import frlgs from "./assets/firered-leafgreen-shiny.png";
+import dp from "./assets/diamond-pearl.png";
+import dps from "./assets/diamond-pearl-shiny.png";
+import p from "./assets/platinum.png";
+import ps from "./assets/platinum-shiny.png";
+import hgss from "./assets/heartgold-soulsilver.png";
+import hgsss from "./assets/heartgold-soulsilver-shiny.png";
+
 import { getTypeArray } from "./typedata";
 import { getH, getL, getS } from "./color-ops";
 
@@ -97,30 +113,91 @@ function getSourceImg(spriteSheet) {
 //         grid_width = 16
 //         max_num = 152
     //     im = im.convert("RGBA")
-    if (spriteSheet === 'crystal-shiny') {
+
+    if (spriteSheet === 'rb') {
+        gridWidth = 16;
+        maxNum = 151;
+        return rb;
+    } else if (spriteSheet === 'ysgb') {
+        gridWidth = 16;
+        maxNum = 151;
+        return ysgb;
+    } else if (spriteSheet === 'ygbc') {
+        gridWidth = 16;
+        maxNum = 151;
+        return ygbc;
+    } else if (spriteSheet === 's') {
         gridWidth = 20;
         maxNum = 251;
-        return crystalShiny;
-    } else if (spriteSheet === 'crystal') {
+        return s;
+    } else if (spriteSheet === 'ss') {
         gridWidth = 20;
         maxNum = 251;
-        return crystal;
-    } else if (spriteSheet === 'gold-shiny') {
+        return ss;
+    } else if (spriteSheet === 'cs') {
         gridWidth = 20;
         maxNum = 251;
-        return goldShiny;
-    } else if (spriteSheet === 'gold') {
+        return cs;
+    } else if (spriteSheet === 'c') {
         gridWidth = 20;
         maxNum = 251;
-        return gold;
-    } else if (spriteSheet === 'black-white-shiny') {
+        return c;
+    } else if (spriteSheet === 'gs') {
+        gridWidth = 20;
+        maxNum = 251;
+        return gs;
+    } else if (spriteSheet === 'g') {
+        gridWidth = 20;
+        maxNum = 251;
+        return g;
+    } else if (spriteSheet === 'gen3') {
+        gridWidth = 25;
+        maxNum = 386;
+        return gen3;
+    } else if (spriteSheet === 'gen3s') {
+        gridWidth = 25;
+        maxNum = 386;
+        return gen3s;
+    } else if (spriteSheet === 'frlg') {
+        gridWidth = 16;
+        maxNum = 151;
+        return frlg;
+    } else if (spriteSheet === 'frlgs') {
+        gridWidth = 16;
+        maxNum = 151;
+        return frlgs;
+    }else if (spriteSheet === 'dp') {
+        gridWidth = 28;
+        maxNum = 493;
+        return dp;
+    } else if (spriteSheet === 'dps') {
+        gridWidth = 28;
+        maxNum = 493;
+        return dps;
+    } else if (spriteSheet === 'p') {
+        gridWidth = 28;
+        maxNum = 493;
+        return p;
+    } else if (spriteSheet === 'ps') {
+        gridWidth = 28;
+        maxNum = 493;
+        return ps;
+    } else if (spriteSheet === 'hgss') {
+        gridWidth = 28;
+        maxNum = 493;
+        return hgss;
+    } else if (spriteSheet === 'hgsss') {
+        gridWidth = 28;
+        maxNum = 493;
+        return hgsss;
+    } else if (spriteSheet === 'bws') {
         gridWidth = 31;
         maxNum = 649;
-        return blackWhiteShiny;
+        return bws;
     } else {
         gridWidth = 31;
         maxNum = 649;
-        return blackWhite;
+        return bw;
     }
 }
 
