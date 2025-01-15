@@ -21,6 +21,21 @@ function App() {
     setLoading(false);
   }
 
+  const randomizeOpts = () => {
+    const sprites = ["rb", "ysgb", "ygbc", "g", "s", "c", "gen3", "frlg", "dp", "p", "hgss", "bw"]
+    const checkArr = [true, false];
+    const typeArr = ["all", "normal", "fighting", "flying", "poison", "ground", "rock", "bug", "ghost", "steel", "fire", "water", "grass", "electric", "psychic", "ice", "dragon", "dark", "fairy"];
+    const optsArr = ["l", "h", "s", "r", "g", "b", "rand", "n"];
+
+    setSpriteSheet(sprites[Math.floor(Math.random()*sprites.length)]);
+    setShiny(checkArr[Math.floor(Math.random()*checkArr.length)]);
+    setType(typeArr[Math.floor(Math.random()*typeArr.length)]);
+    setRand(checkArr[Math.floor(Math.random()*checkArr.length)]);
+    setOpt1(optsArr[Math.floor(Math.random()*optsArr.length)]);
+    setOpt2(optsArr[Math.floor(Math.random()*optsArr.length)]);
+    setOpt3(optsArr[Math.floor(Math.random()*optsArr.length)]);
+  }
+
   return (
     <>
       <h1>Pokesorter</h1>
@@ -117,9 +132,14 @@ function App() {
             </label>
             </div>
         </div>
-      <button onClick={() => getImage()}>
+        <div style={{alignContent: 'center'}}>
+      <button onClick={() => randomizeOpts()} style={{display: 'block', margin: "0 0 1em 0"}}>
+        Randomize
+      </button>
+      <button onClick={() => getImage()} style={{display: 'block'}}>
         GO!
       </button>
+      </div>
       </div>
       <div className="image-wrapper">
         {loading && <p>Loading...</p>}
