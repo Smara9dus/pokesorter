@@ -67,53 +67,7 @@ async function loadImage(url) {
     return new Promise(r => { let i = new Image(); i.onload = (() => r(i)); i.src = url; });
   }
 
-function getSourceImg(spriteSheet) {
-//     elif (choice == 2):
-//         im = Image.open("images/diamond-pearl.png")
-//         grid_width = 28
-//         max_num = 493
-//     elif (choice == 3):
-//         im = Image.open("images/diamond-pearl-shiny.png")
-//         grid_width = 28
-//         max_num = 493
-//     elif (choice == 4):
-//         im = Image.open("images/platinum.png")
-//         grid_width = 28
-//         max_num = 493
-//     elif (choice == 5):
-//         im = Image.open("images/platinum-shiny.png")
-//         grid_width = 28
-//         max_num = 493
-//     elif (choice == 6):
-//         im = Image.open("images/heartgold-soulsilver.png")
-//         grid_width = 28
-//         max_num = 493
-//     elif (choice == 7):
-//         im = Image.open("images/heartgold-soulsilver-shiny.png")
-//         grid_width = 28
-//         max_num = 493
-//     elif (choice == 8):
-//         im = Image.open("images/heartgold-soulsilver.png")
-//         grid_width = 28
-//         max_num = 493
-//     elif (choice == 9):
-//         im = Image.open("images/generation-3.png")
-//         grid_width = 25
-//         max_num = 386
-//     elif (choice == 10):
-//         im = Image.open("images/generation-3-shiny.png")
-//         grid_width = 25
-//         max_num = 386
-//     elif (choice == 11):
-//         im = Image.open("images/firered-leafgreen.png")
-//         grid_width = 16
-//         max_num = 152
-//     elif (choice == 12):
-//         im = Image.open("images/firered-leafgreen-shiny.png")
-//         grid_width = 16
-//         max_num = 152
-    //     im = im.convert("RGBA")
-
+function getSourceImg(spriteSheet, shiny) {
     if (spriteSheet === 'rb') {
         gridWidth = 16;
         maxNum = 151;
@@ -126,78 +80,42 @@ function getSourceImg(spriteSheet) {
         gridWidth = 16;
         maxNum = 151;
         return ygbc;
-    } else if (spriteSheet === 's') {
-        gridWidth = 20;
-        maxNum = 251;
-        return s;
-    } else if (spriteSheet === 'ss') {
-        gridWidth = 20;
-        maxNum = 251;
-        return ss;
-    } else if (spriteSheet === 'cs') {
-        gridWidth = 20;
-        maxNum = 251;
-        return cs;
-    } else if (spriteSheet === 'c') {
-        gridWidth = 20;
-        maxNum = 251;
-        return c;
-    } else if (spriteSheet === 'gs') {
-        gridWidth = 20;
-        maxNum = 251;
-        return gs;
     } else if (spriteSheet === 'g') {
         gridWidth = 20;
         maxNum = 251;
-        return g;
+        return shiny ? gs : g;
+    } else if (spriteSheet === 's') {
+        gridWidth = 20;
+        maxNum = 251;
+        return shiny ? ss : s;
+    } else if (spriteSheet === 'c') {
+        gridWidth = 20;
+        maxNum = 251;
+        return shiny ? cs : c;
     } else if (spriteSheet === 'gen3') {
         gridWidth = 25;
         maxNum = 386;
-        return gen3;
-    } else if (spriteSheet === 'gen3s') {
-        gridWidth = 25;
-        maxNum = 386;
-        return gen3s;
+        return shiny ? gen3s : gen3;
     } else if (spriteSheet === 'frlg') {
         gridWidth = 16;
         maxNum = 151;
-        return frlg;
-    } else if (spriteSheet === 'frlgs') {
-        gridWidth = 16;
-        maxNum = 151;
-        return frlgs;
-    }else if (spriteSheet === 'dp') {
+        return shiny ? frlgs : frlg;
+    } else if (spriteSheet === 'dp') {
         gridWidth = 28;
         maxNum = 493;
-        return dp;
-    } else if (spriteSheet === 'dps') {
-        gridWidth = 28;
-        maxNum = 493;
-        return dps;
+        return shiny ? dps : dp;
     } else if (spriteSheet === 'p') {
         gridWidth = 28;
         maxNum = 493;
-        return p;
-    } else if (spriteSheet === 'ps') {
-        gridWidth = 28;
-        maxNum = 493;
-        return ps;
+        return shiny ? ps : p;
     } else if (spriteSheet === 'hgss') {
         gridWidth = 28;
         maxNum = 493;
-        return hgss;
-    } else if (spriteSheet === 'hgsss') {
-        gridWidth = 28;
-        maxNum = 493;
-        return hgsss;
-    } else if (spriteSheet === 'bws') {
-        gridWidth = 31;
-        maxNum = 649;
-        return bws;
+        return shiny ? hgsss : hgss;
     } else {
         gridWidth = 31;
         maxNum = 649;
-        return bw;
+        return shiny ? bws : bw;
     }
 }
 
@@ -250,12 +168,12 @@ function removeTransparent() {
     }
 }
 
-function randomizePixels() { // TODO make optional?
-    for (let i = pixels.length - 1; i > 0; i--) {
+function randomize(array) { // TODO make optional?
+    for (let i = array.length - 1; i > 0; i--) {
         const j = Math.floor(Math.random() * (i + 1));
-        [pixels[i], pixels[j]] = [pixels[j], pixels[i]];
+        [array[i], array[j]] = [array[j], array[i]];
       }
-      return pixels;
+      return array;
 }
 
 function mergeSortL(array) {
@@ -336,12 +254,34 @@ function mergeL(left, right) {
     let j = 0;
     
     while (i < left.length && j < right.length) {
-        if (getL(left[i].r, left[i].g, left[i].b) < getL(right[j].r, right[j].g, right[j].b)) {
-        result.push(left[i]);
-        i++;
-        } else {
-        result.push(right[j]);
-        j++;
+        const ll = getL(left[i].r, left[i].g, left[i].b);
+        const rl = getL(right[j].r, right[j].g, right[j].b);
+        if (ll < rl) {
+            result.push(left[i]);
+            i++;
+        } else if (ll > rl) {
+            result.push(right[j]);
+            j++;
+        } else { // if equal, sort by H
+            const lh = getH(left[i].r, left[i].g, left[i].b);
+            const rh = getH(right[j].r, right[j].g, right[j].b);
+            if (lh < rh) {
+                result.push(left[i]);
+                i++;
+            } else if (lh > rh) {
+                result.push(right[j]);
+                j++;
+            } else { // if equal, sort by S
+                const ls = getS(left[i].r, left[i].g, left[i].b);
+                const rs = getS(right[j].r, right[j].g, right[j].b);
+                if (ls < rs) {
+                    result.push(left[i]);
+                    i++;
+                } else {
+                    result.push(right[j]);
+                    j++;
+                }
+            }
         }
     }
     
@@ -354,12 +294,34 @@ function mergeH(left, right) {
     let j = 0;
     
     while (i < left.length && j < right.length) {
-        if (getH(left[i].r, left[i].g, left[i].b) < getH(right[j].r, right[j].g, right[j].b)) {
-        result.push(left[i]);
-        i++;
-        } else {
-        result.push(right[j]);
-        j++;
+        const lh = getH(left[i].r, left[i].g, left[i].b);
+        const rh = getH(right[j].r, right[j].g, right[j].b);
+        if (lh < rh) {
+            result.push(left[i]);
+            i++;
+        } else if (lh > rh) {
+            result.push(right[j]);
+            j++;
+        } else { // if equal, sort by S
+            const ls = getS(left[i].r, left[i].g, left[i].b);
+            const rs = getS(right[j].r, right[j].g, right[j].b);
+            if (ls < rs) {
+                result.push(left[i]);
+                i++;
+            } else if (ls > rs) {
+                result.push(right[j]);
+                j++;
+            } else { // if equal, sort by L
+                const ll = getL(left[i].r, left[i].g, left[i].b);
+                const rl = getL(right[j].r, right[j].g, right[j].b);
+                if (ll < rl) {
+                    result.push(left[i]);
+                    i++;
+                } else {
+                    result.push(right[j]);
+                    j++;
+                }
+            }
         }
     }
     
@@ -372,12 +334,34 @@ function mergeS(left, right) {
     let j = 0;
     
     while (i < left.length && j < right.length) {
-        if (getS(left[i].r, left[i].g, left[i].b) < getS(right[j].r, right[j].g, right[j].b)) {
-        result.push(left[i]);
-        i++;
-        } else {
-        result.push(right[j]);
-        j++;
+        const ls = getS(left[i].r, left[i].g, left[i].b);
+        const rs = getS(right[j].r, right[j].g, right[j].b);
+        if (ls < rs) {
+            result.push(left[i]);
+            i++;
+        } else if (ls > rs) {
+            result.push(right[j]);
+            j++;
+        } else { // if equal, sort by L
+            const ll = getL(left[i].r, left[i].g, left[i].b);
+            const rl = getL(right[j].r, right[j].g, right[j].b);
+            if (ll < rl) {
+                result.push(left[i]);
+                i++;
+            } else if (ll > rl) {
+                result.push(right[j]);
+                j++;
+            } else { // if equal, sort by S
+                const ls = getS(left[i].r, left[i].g, left[i].b);
+                const rs = getS(right[j].r, right[j].g, right[j].b);
+                if (ls < rs) {
+                    result.push(left[i]);
+                    i++;
+                } else {
+                    result.push(right[j]);
+                    j++;
+                }
+            }
         }
     }
     
@@ -391,11 +375,21 @@ function mergeR(left, right) {
     
     while (i < left.length && j < right.length) {
         if (left[i].r < right[j].r) {
-        result.push(left[i]);
-        i++;
-        } else {
-        result.push(right[j]);
-        j++;
+            result.push(left[i]);
+            i++;
+        } else if (left[i].r > right[j].r) {
+            result.push(right[j]);
+            j++;
+        } else { // if equal, sort by L
+            const ll = getL(left[i].r, left[i].g, left[i].b);
+            const rl = getL(right[j].r, right[j].g, right[j].b);
+            if (ll < rl) {
+                result.push(left[i]);
+                i++;
+            } else {
+                result.push(right[j]);
+                j++;
+            }
         }
     }
     
@@ -409,11 +403,21 @@ function mergeG(left, right) {
     
     while (i < left.length && j < right.length) {
         if (left[i].g < right[j].g) {
-        result.push(left[i]);
-        i++;
-        } else {
-        result.push(right[j]);
-        j++;
+            result.push(left[i]);
+            i++;
+        } else if (left[i].g > right[j].g) {
+            result.push(right[j]);
+            j++;
+        } else { // if equal, sort by L
+            const ll = getL(left[i].r, left[i].g, left[i].b);
+            const rl = getL(right[j].r, right[j].g, right[j].b);
+            if (ll < rl) {
+                result.push(left[i]);
+                i++;
+            } else {
+                result.push(right[j]);
+                j++;
+            }
         }
     }
     
@@ -427,11 +431,21 @@ function mergeB(left, right) {
     
     while (i < left.length && j < right.length) {
         if (left[i].b < right[j].b) {
-        result.push(left[i]);
-        i++;
-        } else {
-        result.push(right[j]);
-        j++;
+            result.push(left[i]);
+            i++;
+        } else if (left[i].b > right[j].b) {
+            result.push(right[j]);
+            j++;
+        } else { // if equal, sort by L
+            const ll = getL(left[i].r, left[i].g, left[i].b);
+            const rl = getL(right[j].r, right[j].g, right[j].b);
+            if (ll < rl) {
+                result.push(left[i]);
+                i++;
+            } else {
+                result.push(right[j]);
+                j++;
+            }
         }
     }
     
@@ -462,10 +476,12 @@ function mergeB(left, right) {
         } else if (option === 'b') {
             newRow = mergeSortB(row);
         } else {
-            newRow = mergeSortL(row);
+            newRow = randomize(row);
         }   
         newRows.push(newRow)
     }) 
+
+    console.log(newRows[100])
 
     // replace pixel array with these rows
     pixels = []
@@ -480,7 +496,7 @@ function verticalSort(option) {
     for (let y = 0; y < canvas.width; y++) {
         const column = []
         for (let i = 0; i < canvas.width; i++) {
-            column.push(pixels[canvas.width * y + i])
+            column.push(pixels[canvas.width * i + y])
         }
         columns.push(column);
     }
@@ -501,7 +517,7 @@ function verticalSort(option) {
         } else if (option === 'b') {
             newColumn = mergeSortB(column);
         } else {
-            newColumn = mergeSortL(column);
+            newColumn = randomize(column);
         }
         newColumns.push(newColumn);
     })
@@ -509,7 +525,7 @@ function verticalSort(option) {
     // replace pixel array with these columns
     for (let y = 0; y < canvas.width; y++) {
         for (let i = 0; i < canvas.width; i++) {
-            pixels[canvas.width * y + i] = newColumns[i][y];
+            pixels[canvas.width * i + y] = newColumns[y][i];
         }
     }    
 }
@@ -526,23 +542,31 @@ function redraw() {
     ctx.putImageData(newImageData, 0, 0);
 }
 
-export async function generate(spriteSheet, type, opt1, opt2, opt3) {
+export async function generate(spriteSheet, shiny, type, rand, opt1, opt2, opt3) {
     initialize();
     // Load source image based on sprite sheet selection
-    const sourceImg = getSourceImg(spriteSheet);
+    const sourceImg = getSourceImg(spriteSheet, shiny);
     // Get image data from source image
     await getCanvas(sourceImg);
     // Filter sprites out of the image that do not match type selection
     typeFilter(type); //comment out everything after this line to debug/verify type arrays
     // Remove transparent pixels
     removeTransparent();
-    // Randomize pixels. Very important!
-    randomizePixels();
+    // Randomize pixels.
+    if (rand) {
+        pixels = randomize(pixels);
+    }
 
-    // a nice combo, sort horizontally by lightness, and vertically by hue
-    horizontalSort(opt1);
-    verticalSort(opt2);
-    horizontalSort(opt3);
+    // Sorts! (sorting 3 times really only does stuff when rand is false)
+    if (opt1 !== 'n') {
+        verticalSort(opt1);
+    }
+    if (opt2 !== 'n') {
+        horizontalSort(opt2);
+    }
+    if (opt3 !== 'n') {
+        verticalSort(opt3);
+    }
     redraw();
     return canvas.toDataURL();
 } 
