@@ -481,8 +481,6 @@ function mergeB(left, right) {
         newRows.push(newRow)
     }) 
 
-    console.log(newRows[100])
-
     // replace pixel array with these rows
     pixels = []
     newRows.forEach(row => {
